@@ -11,8 +11,8 @@ import "./App.css";
 //   apiKey: '111a95e0b9dc491b9001c67590f2d462'
 // })
 
-// we created a function that: 
-//1. stores important information like PAT, USER_ID, etc. 
+// we created a function that:
+//1. stores important information like PAT, USER_ID, etc.
 //2. receives the imageUrl from out user
 //3. Sets up the JSON data that will send to Clarifai
 //4. creates a request object
@@ -57,37 +57,35 @@ const returnClarifaiJSONRequestOptions = (imageUrl) => {
   return requestOptions;
 };
 
-
-
-
 function App() {
   const [input, setInput] = useState("");
+  const [imageUrl, setImageUrl] = useState('');
 
   const onInputChange = (event) => {
-    console.log(event.target.value);
     setInput(event.target.value);
   };
 
   const onButtonSubmit = () => {
     const requestOptions = returnClarifaiJSONRequestOptions(input);
     fetch(
-      "https://api.clarifai.com/v2/models/" + 'face-detection' + "/outputs",
+      "https://api.clarifai.com/v2/models/" + "face-detection" + "/outputs",
       requestOptions
     )
-    .then(response => {
-      if (!response.ok) {
-        throw new Error('Error occurred while fetching data');
-      }
-      return response.json();
-    })
-    .then(data => {
-      // Process the response data here
-      console.log(data);
-    })
-    .catch(error => {
-      // Handle any errors that occurred during the fetch request
-      console.error(error);
-    });
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Error occurred while fetching data");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        // Process the response data here
+        console.log(data);
+        setImageUrl(input); // Set the imageUrl state after successful response
+      })
+      .catch((error) => {
+        // Handle any errors that occurred during the fetch request
+        console.error(error);
+      });
   };
 
   return (
@@ -100,7 +98,7 @@ function App() {
         onInputChange={onInputChange}
         onButtonSubmit={onButtonSubmit}
       />
-      <FaceRecognition />
+      <FaceRecognition imageUrl={imageUrl} />
     </div>
   );
 }
