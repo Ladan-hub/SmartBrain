@@ -59,7 +59,28 @@ const returnClarifaiJSONRequestOptions = (imageUrl) => {
 
 function App() {
   const [input, setInput] = useState("");
-  const [imageUrl, setImageUrl] = useState('');
+  const [imageUrl, setImageUrl] = useState("");
+  const [box, setBox] = useState({});
+
+  const calculateFaceLocation = (data, imageUrl) => {
+    // some calculation to find the location of the face
+    const boundingBox =
+    data.outputs[0].data.regions[0].region_info.bounding_box;
+    const image = document.getElementById("inputImage");
+    const width = Number(image.width);
+    const height = Number(image.height)
+    return {
+      leftCol: boundingBox.left_col * width,
+      topRow: boundingBox.top_row * height,
+      rightCol: width - (boundingBox.righ_col * width),
+      bottomRow: height - (boundingBox.bottom_row * height),
+    }
+  };
+
+  const displayFaceBox = (box) => {
+    setBox(box);
+    console.log(box)
+  }
 
   const onInputChange = (event) => {
     setInput(event.target.value);
@@ -81,6 +102,7 @@ function App() {
         // Process the response data here
         console.log(data);
         setImageUrl(input); // Set the imageUrl state after successful response
+        displayFaceBox(calculateFaceLocation(data));
       })
       .catch((error) => {
         // Handle any errors that occurred during the fetch request
