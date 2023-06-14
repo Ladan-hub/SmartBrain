@@ -60,8 +60,14 @@ function App() {
   const [imageUrl, setImageUrl] = useState("");
   const [box, setBox] = useState({});
   const [route, setRoute] = useState('signin');
+  const [isSignedIn, setIsSignedIn] = useState(false);
 
   const onRouteChange = (route) => {
+    if (route === 'signout') {
+      setIsSignedIn(false)
+    } else if (route === 'home') {
+      setIsSignedIn(true)
+    }
     setRoute(route);
   }
 
@@ -123,7 +129,7 @@ function App() {
   return (
     <div className="App">
       <ParticlesBg color="#ffffff" num={150} type="cobweb" bg={true} />
-      <Navigation onRouteChange={onRouteChange} />
+      <Navigation onRouteChange={onRouteChange} isSignedIn={isSignedIn} />
       {route === 'signin' 
         ? <Signin onRouteChange={onRouteChange} />
         : route === 'register' ? <Register onRouteChange={onRouteChange} />  : (
