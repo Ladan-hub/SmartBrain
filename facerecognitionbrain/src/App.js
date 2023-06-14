@@ -6,6 +6,7 @@ import ImageLinkForm from "./components/ImageLinkForm/ImageLinkForm";
 import FaceRecognition from "./components/FaceRecognition/FaceRecognition";
 import Signin from "./components/Signin/Signin";
 import Rank from "./components/Rank/Rank";
+import Register from "./components/Register/Register";
 import "./App.css";
 
 // we created a function that:
@@ -125,7 +126,7 @@ function App() {
       <Navigation onRouteChange={onRouteChange} />
       {route === 'signin' 
         ? <Signin onRouteChange={onRouteChange} />
-        : (
+        : route === 'register' ? <Register onRouteChange={onRouteChange} />  : (
           <div>
             <Logo />
             <Rank />
@@ -137,6 +138,7 @@ function App() {
           </div>
         )
       }
+      
     </div>
   );
     }
