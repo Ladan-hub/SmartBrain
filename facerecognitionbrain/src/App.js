@@ -60,8 +60,8 @@ function App() {
   const [box, setBox] = useState({});
   const [route, setRoute] = useState('signin');
 
-  const onRouteChange = () => {
-    setRoute('home');
+  const onRouteChange = (route) => {
+    setRoute(route);
   }
 
   const calculateFaceLocation = (data) => {
@@ -122,7 +122,7 @@ function App() {
   return (
     <div className="App">
       <ParticlesBg color="#ffffff" num={150} type="cobweb" bg={true} />
-      <Navigation />
+      <Navigation onRouteChange={onRouteChange} />
       {route === 'signin' 
         ? <Signin onRouteChange={onRouteChange} />
         : (
