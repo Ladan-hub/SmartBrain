@@ -130,7 +130,7 @@ function App() {
     <div className="App">
       <ParticlesBg color="#ffffff" num={150} type="cobweb" bg={true} />
       <Navigation onRouteChange={onRouteChange} isSignedIn={isSignedIn} />
-      {route === 'signin' 
+      {route === 'signin' || route === 'signout'
         ? <Signin onRouteChange={onRouteChange} />
         : route === 'register' ? <Register onRouteChange={onRouteChange} />  : (
           <div>
