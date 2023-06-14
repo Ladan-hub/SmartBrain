@@ -58,6 +58,11 @@ function App() {
   const [input, setInput] = useState("");
   const [imageUrl, setImageUrl] = useState("");
   const [box, setBox] = useState({});
+  const [route, setRoute] = useState('signin');
+
+  const onRouteChange = () => {
+    setRoute('home');
+  }
 
   const calculateFaceLocation = (data) => {
     // some calculation to find the location of the face
@@ -118,16 +123,23 @@ function App() {
     <div className="App">
       <ParticlesBg color="#ffffff" num={150} type="cobweb" bg={true} />
       <Navigation />
-      <Signin />
-      <Logo />
-      <Rank />
-      <ImageLinkForm
-        onInputChange={onInputChange}
-        onButtonSubmit={onButtonSubmit}
-      />
-      <FaceRecognition box={box} imageUrl={imageUrl} />
+      {route === 'signin' 
+        ? <Signin onRouteChange={onRouteChange} />
+        : (
+          <div>
+            <Logo />
+            <Rank />
+            <ImageLinkForm
+              onInputChange={onInputChange}
+              onButtonSubmit={onButtonSubmit}
+            />
+            <FaceRecognition box={box} imageUrl={imageUrl} />
+          </div>
+        )
+      }
     </div>
   );
-}
+    }
+  
 
 export default App;
