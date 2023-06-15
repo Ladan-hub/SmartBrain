@@ -24,10 +24,11 @@ const database = {
 };
 
 app.get("/", (req, res) => {
-  res.send("This is working");
+  res.send(database.users);
 });
 
-app.post("/signin", (req, res) => {
+// Sign in 
+app.post('/signin', (req, res) => {
   if (
     req.body.email === database.users[0].email &&
     req.body.password === database.users[0].password
@@ -37,6 +38,26 @@ app.post("/signin", (req, res) => {
     res.status(400).json("error logging in");
   }
 });
+
+// Register
+
+app.post('/register', (req,res) => {
+
+    const {name, email, password} = req.body;
+
+    database.users.push(
+        {
+            id: "125",
+            name: name,
+            email: email,
+            password: password,
+            entries: 0,
+            joined: new Date(),
+          }
+    )
+
+    res.json(database.users[database.users.length - 1])
+})
 
 app.listen(3000, () => {
   console.log("App is running on port 3000");
