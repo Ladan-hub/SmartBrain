@@ -6,7 +6,7 @@ const database = {
   users: [
     {
       id: "123",
-      name: "Jogn",
+      name: "John",
       email: "john@gmail.com",
       password: "cookies",
       entries: 0,
@@ -27,8 +27,8 @@ app.get("/", (req, res) => {
   res.send(database.users);
 });
 
-// Sign in 
-app.post('/signin', (req, res) => {
+// Sign in
+app.post("/signin", (req, res) => {
   if (
     req.body.email === database.users[0].email &&
     req.body.password === database.users[0].password
@@ -41,26 +41,36 @@ app.post('/signin', (req, res) => {
 
 // Register
 
-app.post('/register', (req,res) => {
+app.post("/register", (req, res) => {
+  const { name, email, password } = req.body;
 
-    const {name, email, password} = req.body;
+  database.users.push({
+    id: "125",
+    name: name,
+    email: email,
+    password: password,
+    entries: 0,
+    joined: new Date(),
+  });
 
-    database.users.push(
-        {
-            id: "125",
-            name: name,
-            email: email,
-            password: password,
-            entries: 0,
-            joined: new Date(),
-          }
-    )
-
-    res.json(database.users[database.users.length - 1])
-})
+  res.json(database.users[database.users.length - 1]);
+});
 
 app.listen(3000, () => {
   console.log("App is running on port 3000");
+});
+
+// Profile
+
+app.get("/profile/:id", (req, res) => {
+  const { id } = req.params;
+
+  database.users.forEach((user) => {
+    if (id === user.id) {
+      return res.json(user);
+    }
+  });
+  res.status(400).json("user not found");
 });
 
 /*
