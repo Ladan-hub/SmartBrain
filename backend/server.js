@@ -1,3 +1,4 @@
+const bcrypt = require('bcrypt-nodejs');
 const express = require("express");
 const app = express();
 app.use(express.json());
@@ -44,6 +45,12 @@ app.post("/signin", (req, res) => {
 app.post("/register", (req, res) => {
   const { name, email, password } = req.body;
 
+  bcrypt.hash(password, null, null, function(err, hash) {
+    // Store hash in your password DB.
+
+    console.log(hash);
+  });
+
   database.users.push({
     id: "125",
     name: name,
@@ -88,6 +95,17 @@ app.put("/image", (req,res) => {
   });
   res.status(400).json("user not found");
 });
+
+
+
+
+// // Load hash from your password DB.
+// bcrypt.compare("bacon", hash, function(err, res) {
+//   // res == true
+// });
+// bcrypt.compare("veggies", hash, function(err, res) {
+//   // res = false
+// });
 
 
 
