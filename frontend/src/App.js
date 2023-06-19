@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import ParticlesBg from "particles-bg";
 import Navigation from "./components/Navigation/Navigation";
 import Logo from "./components/Logo/Logo";
@@ -61,6 +61,18 @@ function App() {
   const [box, setBox] = useState({});
   const [route, setRoute] = useState('signin');
   const [isSignedIn, setIsSignedIn] = useState(false);
+
+
+  useEffect(() => {
+    const fetchData = async () => {
+     
+        const response = await fetch('http://localhost:3000');
+        const jsonData = response.json();
+        console.log(jsonData);
+    }
+  })
+
+
 
   const onRouteChange = (route) => {
     if (route === 'signout') {

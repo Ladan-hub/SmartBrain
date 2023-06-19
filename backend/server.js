@@ -1,7 +1,12 @@
 const bcrypt = require('bcrypt-nodejs');
 const express = require("express");
+const cors = require('cors');
 const app = express();
+
+//middle-wears
 app.use(express.json());
+app.use(cors());
+
 
 const database = {
   users: [
@@ -63,9 +68,6 @@ app.post("/register", (req, res) => {
   res.json(database.users[database.users.length - 1]);
 });
 
-app.listen(3000, () => {
-  console.log("App is running on port 3000");
-});
 
 // Profile
 
@@ -94,6 +96,11 @@ app.put("/image", (req,res) => {
     }
   });
   res.status(400).json("user not found");
+});
+
+
+app.listen(3000, () => {
+  console.log("App is running on port 3000");
 });
 
 
