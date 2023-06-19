@@ -59,29 +59,34 @@ function App() {
   const [input, setInput] = useState("");
   const [imageUrl, setImageUrl] = useState("");
   const [box, setBox] = useState({});
-  const [route, setRoute] = useState('signin');
+  const [route, setRoute] = useState("signin");
   const [isSignedIn, setIsSignedIn] = useState(false);
-
 
   useEffect(() => {
     const fetchData = async () => {
-     
-        const response = await fetch('http://localhost:3000');
-        const jsonData = response.json();
+      try {
+        const response = await fetch("http://localhost:3000/");
+        if (!response.ok) {
+          throw new Error("Error occurred while fetching data");
+        }
+        const jsonData = await response.json();
         console.log(jsonData);
-    }
-  })
+      } catch (error) {
+        console.error(error);
+      }
+    };
 
-
+    fetchData();
+  }, []);
 
   const onRouteChange = (route) => {
-    if (route === 'signout') {
-      setIsSignedIn(false)
-    } else if (route === 'home') {
-      setIsSignedIn(true)
+    if (route === "signout") {
+      setIsSignedIn(false);
+    } else if (route === "home") {
+      setIsSignedIn(true);
     }
     setRoute(route);
-  }
+  };
 
   const calculateFaceLocation = (data) => {
     // some calculation to find the location of the face
@@ -122,13 +127,13 @@ function App() {
       })
       .then((data) => {
         // Process the response data here
-        console.log(data);
+        // console.log(data);
         setImageUrl(input); // Set the imageUrl state after successful response
         const image = document.getElementById("inputImage");
-      image.onload = () => {
-        const boxLocation = calculateFaceLocation(data);
-        displayFaceBox(boxLocation);
-      };
+        image.onload = () => {
+          const boxLocation = calculateFaceLocation(data);
+          displayFaceBox(boxLocation);
+        };
         return calculateFaceLocation(data);
       })
       .then((boxLocation) => displayFaceBox(boxLocation))
@@ -142,24 +147,23 @@ function App() {
     <div className="App">
       <ParticlesBg color="#ffffff" num={150} type="cobweb" bg={true} />
       <Navigation onRouteChange={onRouteChange} isSignedIn={isSignedIn} />
-      {route === 'signin' || route === 'signout'
-        ? <Signin onRouteChange={onRouteChange} />
-        : route === 'register' ? <Register onRouteChange={onRouteChange} />  : (
-          <div>
-            <Logo />
-            <Rank />
-            <ImageLinkForm
-              onInputChange={onInputChange}
-              onButtonSubmit={onButtonSubmit}
-            />
-            <FaceRecognition box={box} imageUrl={imageUrl} />
-          </div>
-        )
-      }
-      
+      {route === "signin" || route === "signout" ? (
+        <Signin onRouteChange={onRouteChange} />
+      ) : route === "register" ? (
+        <Register onRouteChange={onRouteChange} />
+      ) : (
+        <div>
+          <Logo />
+          <Rank />
+          <ImageLinkForm
+            onInputChange={onInputChange}
+            onButtonSubmit={onButtonSubmit}
+          />
+          <FaceRecognition box={box} imageUrl={imageUrl} />
+        </div>
+      )}
     </div>
   );
-    }
-  
+}
 
 export default App;
