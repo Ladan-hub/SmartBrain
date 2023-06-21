@@ -61,27 +61,41 @@ function App() {
   const [box, setBox] = useState({});
   const [route, setRoute] = useState("signin");
   const [isSignedIn, setIsSignedIn] = useState(false);
+  const [user, setUser] = useState({
+    id: "123",
+    name: 'John',
+    email: '',
+    entries: 0,
+    joined: ''
+  });
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch("http://localhost:3000/");
-        if (!response.ok) {
-          throw new Error("Error occurred while fetching data");
-        }
-        const jsonData = await response.json();
-        // console.log(jsonData);
-      } catch (error) {
-        console.error(error);
-      }
-    };
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       const response = await fetch("http://localhost:3000/");
+  //       if (!response.ok) {
+  //         throw new Error("Error occurred while fetching data");
+  //       }
+  //       const jsonData = await response.json();
+  //       // console.log(jsonData);
+  //     } catch (error) {
+  //       console.error(error);
+  //     }
+  //   };
 
-    fetchData();
-  }, []);
+  //   fetchData();
+  // }, []);
 
-  const onRouteChange = (route) => {
+  const onRouteChange = (route, userId) => {
     if (route === "signout") {
       setIsSignedIn(false);
+      setUser({
+        id: '',
+        name: '',
+        email: '',
+        entries: 0,
+        joined: ''
+      });
     } else if (route === "home") {
       setIsSignedIn(true);
     }
@@ -154,7 +168,7 @@ function App() {
       ) : (
         <div>
           <Logo />
-          <Rank />
+          <Rank name={user.name} entries={user.entries} />
           <ImageLinkForm
             onInputChange={onInputChange}
             onButtonSubmit={onButtonSubmit}
