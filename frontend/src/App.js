@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import ParticlesBg from "particles-bg";
 import Navigation from "./components/Navigation/Navigation";
 import Logo from "./components/Logo/Logo";
@@ -86,7 +87,7 @@ function App() {
   //   fetchData();
   // }, []);
 
-  const onRouteChange = (route) => {
+  const onRouteChange = (route, jsonData) => {
     if (route === "signout") {
       setIsSignedIn(false);
       setUser({
@@ -98,6 +99,12 @@ function App() {
       });
     } else if (route === "home") {
       setIsSignedIn(true);
+      setUser({
+      name: jsonData.name,
+      email: jsonData.email,
+      entries: jsonData.entries,
+      joined: jsonData.joined,
+      })
     }
     setRoute(route);
   };

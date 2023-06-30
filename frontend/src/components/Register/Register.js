@@ -25,7 +25,7 @@ const Register = ({ onRouteChange }) => {
       }
       const jsonData = await response.json();
       console.log("THIS IS REGISTER JSON DATA", jsonData);
-      onRouteChange("home");
+      onRouteChange("home", jsonData);
     } catch (error) {
       console.log(error);
     }

@@ -1,13 +1,9 @@
 import React, { useState } from "react";
-import { useLocation } from "react-router-dom";
+
 
 const Signin = ({ onRouteChange }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
-  const location = useLocation();
-
-  console.log(location.state)
 
   const signInSubmit = async (e) => {
     e.preventDefault();
@@ -27,7 +23,7 @@ const Signin = ({ onRouteChange }) => {
       }
       const jsonData = await response.json();
       console.log("THIS IS SIGN IN JSON DATA USER'S NAME", jsonData.name);
-      onRouteChange("home");
+      onRouteChange("home", jsonData);
     } catch (error) {
       console.log(error);
     }

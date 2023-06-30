@@ -92,22 +92,19 @@ app.post("/register", (req, res) => {
             joined: new Date(),
           })
           .then((user) => {
-            res.json(user[0]);
+            const registeredUser = {
+              id: user[0].id,
+              name: user[0].name,
+              email: user[0].email,
+              entries: user[0].entries,
+              joined: user[0].joined,
+            };
+            res.json(registeredUser);
           })
           .then(trx.commit)
           .catch(trx.rollback);
       });
   }).catch((err) => res.status(400).json("unable to register"));
-
-  // bcrypt.hash(password, null, null, function (err, hash) {
-  //   // Store hash in your password DB.
-  //   if (err) {
-  //     res.status(500).json("Error occurred while hashing password");
-  //     return;
-  //   }
-
-  //   res.json(newUser);
-  // });
 });
 
 // Profile
