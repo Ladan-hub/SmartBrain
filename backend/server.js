@@ -1,6 +1,24 @@
 const bcrypt = require("bcrypt-nodejs");
 const express = require("express");
 const cors = require("cors");
+const knex = require("knex");
+
+const db = knex({
+  client: "pg",
+  connection: {
+    host: "localhost",
+    user: "ladannazari",
+    password: "",
+    database: "smart-brain",
+  },
+});
+
+// db.select("*")
+//   .from("users")
+//   .then((data) => {
+//     console.log(data[0]);
+//   });
+
 const app = express();
 
 //middle-wears
@@ -34,14 +52,20 @@ app.get("/", (req, res) => {
 
 // Sign in
 app.post("/signin", (req, res) => {
-  if (
-    req.body.email === database.users[0].email &&
-    req.body.password === database.users[0].password
-  ) {
-    res.json("success");
-  } else {
-    res.status(400).json("error logging in");
+db.select("email", "hash").from('login')
+  .where("email", "=", req.body.email)
+  .then(data => { 
+  const isValid = bcrypt.compareSync(req.body.password, data[0].hash)
+    if (isValid) {
+   db.select('*').from('users')
+  .where('email', '=', req.body.email)
+  .then(user => {
+  res.json(user[0])
+  })
+  .catch(error => res.status(400).json('unable to get user'))
   }
+  })
+  .catch(err => res.status(400).json('wrong credentials'))
 });
 
 // Register
@@ -49,27 +73,41 @@ app.post("/signin", (req, res) => {
 app.post("/register", (req, res) => {
   const { name, email, password } = req.body;
 
-  bcrypt.hash(password, null, null, function (err, hash) {
-    // Store hash in your password DB.
-    if (err) {
-      res.status(500).json("Error occurred while hashing password");
-      return;
-    }
+  const hash = bcrypt.hashSync(password);
+  db.transaction((trx) => {
+    trx
+      .insert({
+        hash: hash,
+        email: email,
+      })
+      .into("login")
+      .returning("email")
+      // .then((data) => console.log(data[0].email))
+      .then((data) => {
+        return trx("users")
+          .returning("*")
+          .insert({
+            email: data[0].email, // Pass the 'email' variable directly
+            name: name,
+            joined: new Date(),
+          })
+          .then((user) => {
+            res.json(user[0]);
+          })
+          .then(trx.commit)
+          .catch(trx.rollback);
+      });
+  }).catch((err) => res.status(400).json("unable to register"));
 
-    // Store the hashed password in the database
-    const newUser = {
-      id: "125",
-      name: name,
-      email: email,
-      password: hash, // Store the hashed password instead of plain password
-      entries: 0,
-      joined: new Date(),
-    };
+  // bcrypt.hash(password, null, null, function (err, hash) {
+  //   // Store hash in your password DB.
+  //   if (err) {
+  //     res.status(500).json("Error occurred while hashing password");
+  //     return;
+  //   }
 
-    database.users.push(newUser);
-
-    res.json(newUser);
-  });
+  //   res.json(newUser);
+  // });
 });
 
 // Profile
@@ -102,26 +140,3 @@ app.put("/image", (req, res) => {
 app.listen(3000, () => {
   console.log("App is running on port 3000");
 });
-
-// // Load hash from your password DB.
-// bcrypt.compare("bacon", hash, function(err, res) {
-//   // res == true
-// });
-// bcrypt.compare("veggies", hash, function(err, res) {
-//   // res = false
-// });
-
-/*
-
-/ res --> 'this is working'
-
-/signin --> POST --> success/fail
-
-/register --> POST --> user(obj)
-
-/profile/:userId -->  GET --> user(obj)
-
-/image --> PUT user
-
-
-*/

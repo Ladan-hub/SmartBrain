@@ -1,8 +1,13 @@
 import React, { useState } from "react";
+import { useLocation } from "react-router-dom";
 
 const Signin = ({ onRouteChange }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  const location = useLocation();
+
+  console.log(location.state)
 
   const signInSubmit = async (e) => {
     e.preventDefault();
@@ -21,7 +26,7 @@ const Signin = ({ onRouteChange }) => {
         throw new Error("Error occurred while submitting data");
       }
       const jsonData = await response.json();
-      // console.log("THIS IS SIGN IN JSON DATA", jsonData);
+      console.log("THIS IS SIGN IN JSON DATA USER'S NAME", jsonData.name);
       onRouteChange("home");
     } catch (error) {
       console.log(error);

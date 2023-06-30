@@ -62,8 +62,8 @@ function App() {
   const [route, setRoute] = useState("signin");
   const [isSignedIn, setIsSignedIn] = useState(false);
   const [user, setUser] = useState({
-    id: "123",
-    name: 'John',
+    id: '',
+    name: '',
     email: '',
     entries: 0,
     joined: ''
@@ -86,7 +86,7 @@ function App() {
   //   fetchData();
   // }, []);
 
-  const onRouteChange = (route, userId) => {
+  const onRouteChange = (route) => {
     if (route === "signout") {
       setIsSignedIn(false);
       setUser({
@@ -169,6 +169,7 @@ function App() {
         <div>
           <Logo />
           <Rank name={user.name} entries={user.entries} />
+
           <ImageLinkForm
             onInputChange={onInputChange}
             onButtonSubmit={onButtonSubmit}
