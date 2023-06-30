@@ -25,26 +25,6 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-const database = {
-  users: [
-    {
-      id: "123",
-      name: "John",
-      email: "john@gmail.com",
-      password: "cookies",
-      entries: 0,
-      joined: new Date(),
-    },
-    {
-      id: "124",
-      name: "Sally",
-      email: "sally@gmail.com",
-      password: "bananas",
-      entries: 0,
-      joined: new Date(),
-    },
-  ],
-};
 
 app.get("/", (req, res) => {
   res.send(database.users);
@@ -109,29 +89,33 @@ app.post("/register", (req, res) => {
 
 // Profile
 
-app.get("/profile/:id", (req, res) => {
-  const { id } = req.params;
+// app.get("/profile/:id", (req, res) => {
+//   const { id } = req.params;
 
-  database.users.forEach((user) => {
-    if (id === user.id) {
-      return res.json(user);
-    }
-  });
-  res.status(400).json("user not found");
-});
+//   database.users.forEach((user) => {
+//     if (id === user.id) {
+//       return res.json(user);
+//     }
+//   });
+//   res.status(400).json("user not found");
+// });
 
 // Images
 
 app.put("/image", (req, res) => {
   const { id } = req.body;
 
-  database.users.forEach((user) => {
-    if (id === user.id) {
-      user.entries++;
-      return res.json(user.entries);
-    }
-  });
-  res.status(400).json("user not found");
+  
+  db('users')
+  .where('id', '=', id)
+  .increment('entries', 1)
+  .returning('entries')
+  .then(entries => {
+    res.json(entries[0])
+  })
+  .catch(err => res.status(400).json('unable to get entries'))
+  
+
 });
 
 app.listen(3000, () => {
