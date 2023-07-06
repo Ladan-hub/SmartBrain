@@ -48,6 +48,7 @@ const Register = ({ onRouteChange }) => {
                 name="name"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
+                required
               />
             </div>
             <div className="mt3">
@@ -61,6 +62,7 @@ const Register = ({ onRouteChange }) => {
                 name="email-address"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+                required
               />
             </div>
             <div class="mv3">
@@ -74,6 +76,7 @@ const Register = ({ onRouteChange }) => {
                 name="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
+                required
               />
             </div>
           </fieldset>

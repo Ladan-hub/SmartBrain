@@ -19,7 +19,9 @@ const Signin = ({ onRouteChange }) => {
         }),
       });
       if (!response.ok) {
+        alert("User does not exist. Please try again.")
         throw new Error("Error occurred while submitting data");
+        
       }
       const jsonData = await response.json();
       console.log("THIS IS SIGN IN JSON DATA USER'S NAME", jsonData.name);
