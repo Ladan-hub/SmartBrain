@@ -135,6 +135,9 @@ function App() {
   };
 
   const onButtonSubmit = () => {
+    if (!input.endsWith('.jpg')) {
+      alert('Invalid Image Format. Please upload an image in JPG format.')
+    }
     const requestOptions = returnClarifaiJSONRequestOptions(input);
     fetch(
       "https://api.clarifai.com/v2/models/" + "face-detection" + "/outputs",
