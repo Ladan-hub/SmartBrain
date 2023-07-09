@@ -115,7 +115,7 @@ function App() {
       data.outputs[0].data.regions[0].region_info.bounding_box;
     const image = document.getElementById("inputImage");
     const width = Number(image.width);
-    console.log(width);
+    // console.log(width);
     const height = Number(image.height);
     const boxLocation = {
       leftCol: boundingBox.left_col * width,

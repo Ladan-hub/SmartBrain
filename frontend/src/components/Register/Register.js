@@ -23,8 +23,8 @@ const Register = ({ onRouteChange }) => {
       if (!response.ok) {
         throw new Error("Error occurred while submitting data");
       }
-      const jsonData = await response.json();
-      console.log("THIS IS REGISTER JSON DATA", jsonData);
+      // const jsonData = await response.json();
+      // console.log("THIS IS REGISTER JSON DATA", jsonData);
       onRouteChange("home", jsonData);
     } catch (error) {
       console.log(error);

@@ -24,7 +24,7 @@ const Signin = ({ onRouteChange }) => {
         
       }
       const jsonData = await response.json();
-      console.log("THIS IS SIGN IN JSON DATA USER'S NAME", jsonData.name);
+      // console.log("THIS IS SIGN IN JSON DATA USER'S NAME", jsonData.name);
       onRouteChange("home", jsonData);
     } catch (error) {
       console.log(error);
