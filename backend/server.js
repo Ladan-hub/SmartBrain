@@ -27,7 +27,7 @@ app.get("/", (req, res) => {
 });
 
 // Sign in
-app.post("https://smart-brain-backend-mggx.onrender.com/signin", (req, res) => {
+app.post("/signin", (req, res) => {
 db.select("email", "hash").from('login')
   .where("email", "=", req.body.email)
   .then(data => { 
@@ -46,7 +46,7 @@ db.select("email", "hash").from('login')
 
 // Register
 
-app.post("https://smart-brain-backend-mggx.onrender.com/register", (req, res) => {
+app.post("/register", (req, res) => {
   const { name, email, password } = req.body;
 
   const hash = bcrypt.hashSync(password);
@@ -98,7 +98,7 @@ app.post("https://smart-brain-backend-mggx.onrender.com/register", (req, res) =>
 
 // Images
 
-app.put("https://smart-brain-backend-mggx.onrender.com/image", (req, res) => {
+app.put("/image", (req, res) => {
   const { id } = req.body;
 
   
