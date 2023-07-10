@@ -6,10 +6,11 @@ const knex = require("knex");
 const db = knex({
   client: "pg",
   connection: {
-    host: "localhost",
-    user: "ladannazari",
-    password: "",
-    database: "smart-brain",
+    host: "dpg-cil2lvh5rnuvtgtoi4k0-a",
+    port: "5432",
+    user: "smart_brain_db_0cpg_user",
+    password: "ihuAgeMP0zq3HCQXjLCYvNF7mlsy1Rs1",
+    database: "smart_brain_db_0cpg",
   },
 });
 
