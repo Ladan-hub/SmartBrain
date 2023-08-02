@@ -136,7 +136,8 @@ function App() {
 
   const onButtonSubmit = () => {
     if (!input.endsWith('.jpg')) {
-      alert('Invalid Image Format. Please upload an image in JPG format.')
+      alert('Invalid Image Format. Please upload an image in JPG format.');
+      return;
     }
     const requestOptions = returnClarifaiJSONRequestOptions(input);
     fetch(
